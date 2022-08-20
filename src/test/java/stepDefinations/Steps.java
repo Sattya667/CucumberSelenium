@@ -26,6 +26,7 @@ import objectRepo.AddcustomerPage;
 import objectRepo.LoginPage;
 import objectRepo.SearchCustomerPage;
 import utils.Configuration;
+import utils.Helper;
 
 public class Steps {
 
@@ -33,9 +34,9 @@ public class Steps {
     public LoginPage lp;
     public AddcustomerPage addCust;
 	public SearchCustomerPage searchCust;
-    public static String environment;
+    public static String env;
     public static String browser;
-    public static String application;
+    public static String app;
 
     @Before
     public void setup() throws IOException
@@ -62,6 +63,11 @@ public class Steps {
         }
 
     }
+    @AfterStep
+    public void takeScreenShot(Scenario scenario){
+        byte[] screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot,"image/png","aaa");
+    }
 	
 	@After(order=0)
 	public void quitBrowser() {
@@ -71,9 +77,9 @@ public class Steps {
     @Given("^user uses following environment details$")
     public void setEnvVar(DataTable values){
         Map<String,String> envValues = values.asMap(String.class,String.class);
-        environment = envValues.get("Environment");
+        env = envValues.get("Environment");
         browser = envValues.get("Browser");
-        application = envValues.get("Application");
+        app = envValues.get("Application");
     }
 		
 	
@@ -169,21 +175,24 @@ public class Steps {
         String email = RandomStringUtils.randomAlphabetic(5) + "@gmail.com";
 //        String email ="abcd@gmail.com";
         addCust.setEmail(email);
-        ;
-        System.out.println("Password is : ### "+Configuration.getConfig("testData.prod.AddNewCust.Password") );
-        addCust.setPassword("test123");
+        System.out.println("Password is : ### "+Configuration.getConfig("testData."+env+"."+app+".Password") );
+        addCust.setPassword(Configuration.getConfig("testData."+env+"."+app+".Password"));
+
+        Thread.sleep(9000);
         // Registered - default
         // The customer cannot be in both 'Guests' and 'Registered' customer roles
         // Add the customer to 'Guests' or 'Registered' customer role
-        addCust.setCustomerRoles("Guest");
+        System.out.println("Role is####### "+Configuration.getConfig("testData."+env+"."+app+".CustomerRoles") );
+
+        addCust.setCustomerRoles(Configuration.getConfig("testData."+env+"."+app+".CustomerRoles"));
         Thread.sleep(3000);
 
-        addCust.setManagerOfVendor("Vendor 2");
-        addCust.setGender("Male");
-        addCust.setFirstName("Pavan");
-        addCust.setLastName("Kumar");
-        addCust.setDob("7/05/1985"); // Format: D/MM/YYY
-        addCust.setCompanyName("busyQA");
+        addCust.setManagerOfVendor(Configuration.getConfig("testData."+env+"."+app+".ManagerOfVendor"));
+        addCust.setGender(Configuration.getConfig("testData."+env+"."+app+".Gender"));
+        addCust.setFirstName(Configuration.getConfig("testData."+env+"."+app+".FirstName"));
+        addCust.setLastName(Configuration.getConfig("testData."+env+"."+app+".LastName"));
+        addCust.setDob(Configuration.getConfig("testData."+env+"."+app+".Dob")); // Format: D/MM/YYY
+        addCust.setCompanyName(Configuration.getConfig("testData."+env+"."+app+".CompanyName"));
         addCust.setAdminContent("This is for testing.........");
     }
 

@@ -1,9 +1,14 @@
 package testRunner;
 
+
+import io.cucumber.java.Scenario;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
+import utils.Helper;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -20,5 +25,10 @@ import org.junit.runner.Runner;
 		
 		)
 public class TestRunner {
+
+	@Before
+	public void preCon(Scenario scenario){
+		Helper.scenario = scenario;
+	}
 
 }

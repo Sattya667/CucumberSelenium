@@ -24,6 +24,8 @@ Feature: Customers
   Examples:
     |Env    | Browser | AppName      |
     |prod   | Chrome  | AddNewCust   |
+    |dev    | Chrome  | AddNewCust   |
+
   @regression
   Scenario: Search Customer by EMailID
     When User click on customers Menu
