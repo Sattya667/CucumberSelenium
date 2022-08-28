@@ -12,23 +12,19 @@ import utils.Helper;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		
+
 		features = {".//src/test/java/features/Customers.feature",
 					".//src/test/java/features/login.feature"},
 		glue = "stepDefinations",
 		monochrome=true,
 		tags= "@sanity",
 		plugin = {"pretty",
-				"html:target/testReport.html"
+				"html:target/testReport.html",
+				"io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"
 					}
 		
 		
 		)
 public class TestRunner {
-
-	@Before
-	public void preCon(Scenario scenario){
-		Helper.scenario = scenario;
-	}
 
 }
